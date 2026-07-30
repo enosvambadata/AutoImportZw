@@ -1,0 +1,84 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-autobid}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-autobid_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-autobid}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-autobid} -d ${POSTGRES_DB:-autobid}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-autobid}:${POSTGRES_PASSWORD:-autobid_dev_password}@db:5432/${POSTGRES_DB:-autobid}
+      DATABASE_URL_SYNC: postgresql+psycopg://${POSTGRES_USER:-autobid}:${POSTGRES_PASSWORD:-autobid_dev_password}@db:5432/${POSTGRES_DB:-autobid}
+      # Required in production — no default. Compose fails if JWT_SECRET_KEY is unset (set it in .env).
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?set a strong 32+ char JWT_SECRET_KEY in .env}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      API_ENV: ${API_ENV:-development}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      MEDIA_BASE_URL: ${MEDIA_BASE_URL:-http://localhost:8000}
+      MEDIA_DIR: /data/media
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-opus-4-8}
+      EBAY_CLIENT_ID: ${EBAY_CLIENT_ID:-}
+      EBAY_CLIENT_SECRET: ${EBAY_CLIENT_SECRET:-}
+      EBAY_ENV: ${EBAY_ENV:-production}
+      DVLA_VES_API_KEY: ${DVLA_VES_API_KEY:-}
+      DVSA_MOT_API_KEY: ${DVSA_MOT_API_KEY:-}
+      DVSA_MOT_CLIENT_ID: ${DVSA_MOT_CLIENT_ID:-}
+      DVSA_MOT_CLIENT_SECRET: ${DVSA_MOT_CLIENT_SECRET:-}
+      DVSA_MOT_TOKEN_URL: ${DVSA_MOT_TOKEN_URL:-}
+      COPART_API_URL: ${COPART_API_URL:-}
+      COPART_API_KEY: ${COPART_API_KEY:-}
+      SYNETIQ_API_URL: ${SYNETIQ_API_URL:-}
+      SYNETIQ_API_KEY: ${SYNETIQ_API_KEY:-}
+      AUTOTRADER_API_URL: ${AUTOTRADER_API_URL:-}
+      AUTOTRADER_API_KEY: ${AUTOTRADER_API_KEY:-}
+      AUTOTRADER_API_SECRET: ${AUTOTRADER_API_SECRET:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - media_data:/data/media   # persists uploaded storefront photos across redeploys
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: >
+      sh -c "alembic upgrade head &&
+             python -m app.seed --if-empty &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api/v1
+      API_INTERNAL_BASE_URL: http://api:8000/api/v1
+    ports:
+      - "3000:3000"
+
+volumes:
+  db_data:
+  media_data:

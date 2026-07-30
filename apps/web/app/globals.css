@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+/* Focus-visible defaults for keyboard navigation. */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  @apply outline outline-2 outline-offset-2 outline-brand-500;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/* Storefront: warm paper canvas + ink hero with a fine engineering grid. */
+.store-canvas {
+  background-color: #f4f1ea;
+  background-image: radial-gradient(rgba(18, 16, 12, 0.045) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.store-hero {
+  background-color: #12100c;
+  background-image:
+    radial-gradient(40rem 28rem at 88% -20%, rgba(217, 139, 52, 0.22), transparent 60%),
+    linear-gradient(180deg, #16130d 0%, #12100c 100%);
+}
+.store-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.overline {
+  @apply text-[11px] font-semibold uppercase tracking-[0.2em];
+}
+.hairline {
+  @apply border-ink/10;
+}
+.spec-chip {
+  @apply inline-flex items-center border border-ink/15 px-2 py-0.5 font-mono text-[11px] uppercase tracking-wide text-ink/70;
+}
+
+/* Oversized "ghost" display type used as a compositional element. */
+.ghost-metric {
+  font-family: var(--font-display), serif;
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 241, 234, 0.16);
+}
+
+/* Nav underline grow — a custom, intentional hover state. */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: currentColor;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Entrance reveal — composed, not decorative. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* Trust marquee — a slow mono ticker of vetting facts. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 34s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; animation: none; }
+  .marquee-track { animation: none; }
+  .nav-link::after { transition: none; }
+}

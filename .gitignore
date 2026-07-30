@@ -1,0 +1,44 @@
+# Node
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+*.tsbuildinfo
+coverage/
+playwright-report/
+test-results/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Env / secrets
+.env
+.env.local
+*.local
+
+# Databases (dev SQLite)
+*.db
+*.sqlite3
+
+# Uploaded/runtime media (storefront photos + un-blurred originals). Not for VCS.
+apps/api/media/
+
+# Accidental local clones / misc
+/%USERPROFILE%/
+scratchpad/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

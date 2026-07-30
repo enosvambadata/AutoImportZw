@@ -1,0 +1,99 @@
+"""Domain enumerations shared by models and schemas."""
+
+from __future__ import annotations
+
+from enum import Enum
+
+
+class Role(str, Enum):
+    ADMIN = "ADMIN"
+    BUYER = "BUYER"
+    VIEWER = "VIEWER"
+
+
+class VatTreatment(str, Enum):
+    MARGIN = "MARGIN"
+    QUALIFYING = "QUALIFYING"
+    COMMERCIAL = "COMMERCIAL"
+    NONE = "NONE"
+
+
+class DataSource(str, Enum):
+    MANUAL = "MANUAL"
+    MOCK_ADAPTER = "MOCK_ADAPTER"
+    CSV_IMPORT = "CSV_IMPORT"
+
+
+class FeeCalcType(str, Enum):
+    FIXED = "FIXED"
+    PERCENTAGE = "PERCENTAGE"
+    PERCENTAGE_PLUS_FIXED = "PERCENTAGE_PLUS_FIXED"
+    TIERED = "TIERED"
+
+
+class ListingStatus(str, Enum):
+    UPCOMING = "UPCOMING"
+    LIVE = "LIVE"
+    SOLD = "SOLD"
+    WITHDRAWN = "WITHDRAWN"
+    PASSED = "PASSED"
+
+
+class AppraisalStatus(str, Enum):
+    DRAFT = "DRAFT"
+    COMPLETE = "COMPLETE"
+    PURCHASED = "PURCHASED"
+    PASSED = "PASSED"
+    ARCHIVED = "ARCHIVED"
+
+
+class CostCategory(str, Enum):
+    AUCTION_FEE = "AUCTION_FEE"
+    FEE_VAT = "FEE_VAT"
+    TRANSPORT = "TRANSPORT"
+    MOT = "MOT"
+    SERVICE = "SERVICE"
+    MECHANICAL = "MECHANICAL"
+    BODYWORK = "BODYWORK"
+    TYRES = "TYRES"
+    GLASS = "GLASS"
+    VALETING = "VALETING"
+    DETAILING = "DETAILING"
+    KEYS = "KEYS"
+    DOCUMENTATION = "DOCUMENTATION"
+    HISTORY_CHECK = "HISTORY_CHECK"
+    WARRANTY = "WARRANTY"
+    ADVERTISING = "ADVERTISING"
+    FINANCE = "FINANCE"
+    STORAGE = "STORAGE"
+    LABOUR = "LABOUR"
+    CONTINGENCY = "CONTINGENCY"
+    OTHER = "OTHER"
+
+
+class Certainty(str, Enum):
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
+
+
+class PreparationStatus(str, Enum):
+    AWAITING = "AWAITING"
+    IN_PROGRESS = "IN_PROGRESS"
+    READY = "READY"
+    ADVERTISED = "ADVERTISED"
+    SOLD = "SOLD"
+
+
+class AuditAction(str, Enum):
+    APPRAISAL_CREATED = "APPRAISAL_CREATED"
+    APPRAISAL_UPDATED = "APPRAISAL_UPDATED"
+    VALUATION_CHANGED = "VALUATION_CHANGED"
+    COST_CHANGED = "COST_CHANGED"
+    RECOMMENDATION_RECALCULATED = "RECOMMENDATION_RECALCULATED"
+    VEHICLE_PURCHASED = "VEHICLE_PURCHASED"
+    VEHICLE_SOLD = "VEHICLE_SOLD"
+    SETTINGS_CHANGED = "SETTINGS_CHANGED"
+    USER_ROLE_CHANGED = "USER_ROLE_CHANGED"
+    USER_CREATED = "USER_CREATED"
+    LOGIN = "LOGIN"
