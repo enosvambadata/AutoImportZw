@@ -100,6 +100,21 @@ class Settings(BaseSettings):
         return self.cookie_secure or self.is_production
 
     @model_validator(mode="after")
+    def _normalise_database_url(self) -> Settings:
+        """Accept a plain postgres URL (e.g. Railway/Supabase DATABASE_URL) and add the drivers.
+
+        Railway/Supabase provide `postgres://` or `postgresql://`; SQLAlchemy async needs
+        `postgresql+asyncpg://` and Alembic (sync) needs `postgresql+psycopg://`.
+        """
+        url = self.database_url
+        if url.startswith("postgres://"):
+            url = "postgresql://" + url[len("postgres://"):]
+        if url.startswith("postgresql://"):
+            self.database_url = "postgresql+asyncpg://" + url[len("postgresql://"):]
+            self.database_url_sync = "postgresql+psycopg://" + url[len("postgresql://"):]
+        return self
+
+    @model_validator(mode="after")
     def _enforce_production_secrets(self) -> Settings:
         if self.is_production:
             secret = self.jwt_secret_key or ""
