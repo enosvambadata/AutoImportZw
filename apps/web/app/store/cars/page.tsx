@@ -36,7 +36,7 @@ export default function CarsPage() {
       </div>
 
       <div className="flex flex-col items-start justify-between gap-3 border border-ink/12 bg-white/50 p-4 sm:flex-row sm:items-center">
-        <p className="text-sm text-ink/70"><span className="font-display text-base">Seen one elsewhere?</span> Send us any Copart / IAA / SYNETIQ link and we&apos;ll vet it &amp; quote it.</p>
+        <p className="text-sm text-ink/70"><span className="font-display text-base">Seen one elsewhere?</span> Send us any car or truck — auction, Auto Trader, Facebook Marketplace, a dealer or a private seller — and we&apos;ll vet it &amp; quote it.</p>
         <Link href="/store/vet" className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink-800">Vet a car <span aria-hidden>→</span></Link>
       </div>
 

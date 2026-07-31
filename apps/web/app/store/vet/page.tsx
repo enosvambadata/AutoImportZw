@@ -44,17 +44,17 @@ export default function VetPage() {
     <div className="mx-auto max-w-3xl">
       <div className="border-b border-ink/10 pb-6">
         <p className="overline text-accent-600">Found a car? · we&apos;ll vet it</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight md:text-5xl">Send us any car. We&apos;ll tell you the truth.</h1>
+        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight md:text-5xl">Send us any car or truck. We&apos;ll tell you the truth.</h1>
         <p className="mt-3 max-w-xl text-ink/60">
-          Seen something on Copart, IAA or SYNETIQ? Paste the link (or the listing details) and we&apos;ll pull
-          the MOT history, check the write-off status and condition, and send you a full landed cost to
-          Zimbabwe — before you commit a cent.
+          Seen one anywhere — an auction, Auto Trader, Facebook Marketplace, a dealer or a private seller?
+          Paste the link (or the listing details) and we&apos;ll pull the MOT history, check the write-off
+          status and condition, and send you a full landed cost to Zimbabwe — before you commit a cent.
         </p>
       </div>
 
       <div className="mt-8 grid gap-8 md:grid-cols-5">
         <div className="space-y-3 md:col-span-3">
-          <input value={f.source_url} onChange={(e) => set("source_url", e.target.value)} placeholder="Paste the auction link (Copart / IAA / SYNETIQ …)" className={input} />
+          <input value={f.source_url} onChange={(e) => set("source_url", e.target.value)} placeholder="Paste the link (auction, Auto Trader, Facebook Marketplace, dealer…)" className={input} />
           <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-ink/35">
             <span className="h-px flex-1 bg-ink/10" /> or paste the details <span className="h-px flex-1 bg-ink/10" />
           </div>

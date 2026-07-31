@@ -9,10 +9,10 @@ import { formatMoney, publicApi } from "@/lib/public-api";
 import type { PublicCarSummary, PublicStats } from "@/types/store";
 
 const STEPS = [
-  { n: "01", title: "We source & vet", body: "Hand-picked UK auction cars, checked for MOT history, write-off status and damage before you ever commit." },
+  { n: "01", title: "We source & vet", body: "Hand-picked from UK auctions, dealers, Auto Trader, Facebook Marketplace and retired company fleets — cars and trucks — and checked for MOT history, write-off status and damage before you ever commit." },
   { n: "02", title: "You see the landed cost", body: "One delivered price in USD — car, fees, shipping and duty, itemised. No surprises, no hidden margins." },
   { n: "03", title: "You approve & deposit", body: "Happy with the car and the number? A deposit reserves it. Nothing is bought without your say-so." },
-  { n: "04", title: "We buy & ship", body: "We win it at auction, export, and ship to your port — then inland to your door in Zimbabwe." },
+  { n: "04", title: "We buy & ship", body: "We secure it — an auction bid or a private purchase — export it, and ship to your port, then inland to your door in Zimbabwe." },
 ];
 
 const VETTING = [
@@ -50,8 +50,9 @@ export default function StoreHome() {
               Import a car you can<br /><span className="italic text-accent-300">actually trust.</span>
             </h1>
             <p className="reveal mt-7 max-w-lg text-lg leading-relaxed text-paper/70" style={{ animationDelay: "160ms" }}>
-              Right-hand-drive UK cars, appraised before you buy — MOT history, honest condition, and a
-              full landed cost in USD. You approve and deposit; we source, buy and ship.
+              Right-hand-drive UK cars and trucks — from auctions, marketplaces and retired company
+              fleets — appraised before you buy: MOT history, honest condition, and a full landed cost
+              in USD. You approve and deposit; we source, buy and ship.
             </p>
             <div className="reveal mt-9 flex flex-wrap gap-3" style={{ animationDelay: "240ms" }}>
               <Link href="/store/cars" className="group inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3 font-semibold text-ink transition hover:bg-white">
