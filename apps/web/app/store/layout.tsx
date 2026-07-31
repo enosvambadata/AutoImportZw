@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { MessageCircle } from "lucide-react";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { WHATSAPP } from "@/lib/public-api";
+
+export const metadata: Metadata = {
+  title: "AutoImport ZW — vetted UK cars & trucks imported to Zimbabwe",
+  description:
+    "Import right-hand-drive UK cars and trucks to Zimbabwe. Every vehicle is appraised — MOT history, honest condition, and a full landed cost in USD — before you commit. You approve and deposit; we source, inspect, buy and ship.",
+};
 
 const display = Fraunces({ subsets: ["latin"], variable: "--font-display", weight: ["400", "500", "600", "700"], style: ["normal", "italic"] });
 const body = Inter({ subsets: ["latin"], variable: "--font-body" });
