@@ -130,6 +130,12 @@ export default function StoreHome() {
           <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">The process</h2>
           <p className="hidden font-mono text-xs uppercase tracking-widest text-ink/40 sm:block">You&apos;re in control at every step</p>
         </div>
+        <p className="mt-4 max-w-2xl text-sm text-ink/60">
+          <span className="font-medium text-ink/80">Two ways to buy:</span> fully delivered to your door,
+          or <span className="font-medium text-ink/80">find &amp; inspect</span> — we source and physically
+          check the car, you collect it in Namibia and pay your own duty. Finder&apos;s fee from 5% of the
+          vehicle price.
+        </p>
         <div>
           {STEPS.map((s) => (
             <div key={s.n} className="group grid gap-2 border-b border-ink/10 py-8 transition-colors hover:bg-ink/[0.02] md:grid-cols-12 md:gap-6">

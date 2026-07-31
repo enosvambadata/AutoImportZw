@@ -48,6 +48,18 @@ export default function CarDetailPage() {
 
   const embed = car.video_url ? embedUrl(car.video_url) : null;
   const cur = car.currency;
+
+  // "Find & inspect" option: buyer collects at the port and pays their own duty.
+  // Finder's fee = 5% of the vehicle purchase price (car + auction fees), minimum $350.
+  const n = (v: string) => Number(v || 0);
+  const L = car.landed;
+  const carCost = n(L.vehicle_price) + n(L.auction_fees);
+  const finderFee = Math.max(350, Math.round(carCost * 0.05));
+  const collectTotal = carCost + n(L.uk_transport) + n(L.ocean_freight) + n(L.estimated_repairs) + finderFee;
+  const ownDuty = n(L.import_duty) + n(L.import_surtax) + n(L.import_vat);
+  const port = L.dest_port || "Walvis Bay";
+  const dest = L.dest_city || L.dest_country;
+
   const specs = [
     car.derivative, car.mileage ? `${new Intl.NumberFormat("en-GB").format(car.mileage)} mi` : null,
     car.fuel_type, car.transmission, car.colour,
@@ -169,6 +181,29 @@ export default function CarDetailPage() {
               surtax on passenger cars over 5 yrs, then VAT). An estimate — the final assessment is
               ZIMRA&apos;s; every figure is confirmed before you pay.
             </p>
+          </section>
+
+          {/* Two ways to buy */}
+          <section className="rounded-xl border border-ink/15 bg-white/50 p-5">
+            <p className="overline text-accent-600">Two ways to buy</p>
+            <div className="mt-3 space-y-4">
+              <div>
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="font-display text-base">Delivered to {dest}</p>
+                  <p className="font-mono text-base font-semibold tabular-nums text-accent-700">{formatMoney(L.total, cur)}</p>
+                </div>
+                <p className="mt-1 text-xs leading-relaxed text-ink/55">All-in. We inspect, buy, ship, clear ZIMRA duty and deliver to your door.</p>
+              </div>
+              <div className="border-t border-ink/10 pt-4">
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="font-display text-base">Find &amp; inspect · collect in {port}</p>
+                  <p className="font-mono text-base font-semibold tabular-nums">{formatMoney(collectTotal, cur)}</p>
+                </div>
+                <p className="mt-1 text-xs leading-relaxed text-ink/55">
+                  We source it, <span className="font-medium text-ink/75">physically inspect the exact car</span>, buy it and ship to {port} — including our finder&apos;s fee ({formatMoney(finderFee, cur)}). You meet the car in Namibia and pay your own duty (≈{formatMoney(ownDuty, cur)} est.) and onward transport.
+                </p>
+              </div>
+            </div>
           </section>
 
           <EnquiryForm slug={car.slug} headline={`${car.model_year} ${car.make} ${car.model}`} />
