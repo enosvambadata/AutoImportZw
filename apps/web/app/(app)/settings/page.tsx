@@ -30,6 +30,23 @@ export default function SettingsPage() {
   const [houses, setHouses] = useState<AuctionHouse[]>([]);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [newUser, setNewUser] = useState({ first_name: "", last_name: "", email: "", password: "", role: "ADMIN" });
+  const [addingUser, setAddingUser] = useState(false);
+  const [userMsg, setUserMsg] = useState<string | null>(null);
+
+  async function addUser() {
+    setUserMsg(null); setError(null);
+    if (newUser.password.length < 8) { setError("Password must be at least 8 characters."); return; }
+    setAddingUser(true);
+    try {
+      await api.post("/users", newUser);
+      setUsers(await api.get<User[]>("/users"));
+      setNewUser({ first_name: "", last_name: "", email: "", password: "", role: "ADMIN" });
+      setUserMsg("User created — you can now sign out and log in with it.");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not create user");
+    } finally { setAddingUser(false); }
+  }
 
   useEffect(() => {
     api.get<Dealership>("/dealership").then(setDealership).catch((e) => setError(e.message));
@@ -141,6 +158,21 @@ export default function SettingsPage() {
                 ))}
               </tbody>
             </table>
+            <div className="border-t border-slate-100 p-5">
+              <p className="mb-2 text-sm font-medium text-slate-700">Add a user</p>
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
+                <Input placeholder="First name" value={newUser.first_name} onChange={(e) => setNewUser((p) => ({ ...p, first_name: e.target.value }))} />
+                <Input placeholder="Last name" value={newUser.last_name} onChange={(e) => setNewUser((p) => ({ ...p, last_name: e.target.value }))} />
+                <Input placeholder="Email" value={newUser.email} onChange={(e) => setNewUser((p) => ({ ...p, email: e.target.value }))} />
+                <Input placeholder="Password (min 8)" type="password" value={newUser.password} onChange={(e) => setNewUser((p) => ({ ...p, password: e.target.value }))} />
+                <select className="rounded-md border border-slate-300 px-2 text-sm" value={newUser.role} onChange={(e) => setNewUser((p) => ({ ...p, role: e.target.value }))}>
+                  <option value="ADMIN">Admin</option><option value="BUYER">Buyer</option><option value="VIEWER">Viewer</option>
+                </select>
+                <Button disabled={addingUser || !newUser.email || !newUser.first_name} onClick={addUser}>{addingUser ? "Adding…" : "Add user"}</Button>
+              </div>
+              {userMsg && <p className="mt-2 text-xs text-emerald-700">{userMsg}</p>}
+              <p className="mt-2 text-xs text-slate-500">Create your own admin here, then sign in with it. Type the password directly — it is never shown again.</p>
+            </div>
           </CardBody>
         </Card>
       )}
